@@ -7,34 +7,17 @@ let score=0;
 let is_it_eaten=false;
 
 
-let snake= [];
+let snake= [500];
 snake[0] = {
     x:9*box,
     y:10*box
-} 
+}
 
 let food={
 x:3*box,
 y:7*box
 }
-function locate_food(){
-let return_ok=true;
-while(1){
 
-    food.x=Math.floor(Math.random()*56+1)*box;
-    food.y=Math.floor(Math.random()*23+1)*box;
-
-    for(let i=0;i<snake.length;i++)
-    if(food.x==snake[i].x&&food.y==snake[i].y)
-        return_ok=false;
-if(return_ok){
-    is_it_eaten=false;
-    return;
-} 
-
-}
-
-}
 
 
 function control(){
@@ -43,7 +26,7 @@ function control(){
     let snakeX=snake[0].x;
     let snakeY=snake[0].y;
 
-    
+
 
     if(d== "LEFT") snakeX-=box;
     if(d== "RIGHT") snakeX+=box;
@@ -52,28 +35,48 @@ function control(){
 
     if(snakeX == food.x && snakeY == food.y){
         score++;
-  
-        is_it_eaten=true;
+        let keep=true;
+        let x;
+        let y;
+        while(keep){
+            keep=false;
+
+            x=Math.floor(Math.random()*56+1)*box;
+            y=Math.floor(Math.random()*23+1)*box;
+            console.log("x is : ",x,"  y is : ",y);
+
+            for(let i=0;i<snake.length;i++){
+                    if(x==snake[i].x&&y==snake[i].y){
+                        console.log("alert coincidence!!!  ","x is : ",x,"  y is : ",y,"snake.x is : ",snake[i].x,"snake.y is : ",snake[i].y);
+                                keep=true;
+                                break;
+                    }
+
+            }
+
+
+        }
+        food.x=x;
+        food.y=y;
 
     }else{
         snake.pop();
     }
 
-
-if(snakeX>56*32){
-snakeX=32;
-}
-else if(snakeX<32){
-snakeX=56*32;
-}
-
-if(snakeY>23*32){
-    snakeY=32;
+    if(snakeX>56*32){
+    snakeX=32;
     }
-else if(snakeY<32){
-    snakeY=23*32;
+    else if(snakeX<32){
+    snakeX=56*32;
     }
-    
+
+    if(snakeY>23*32){
+        snakeY=32;
+        }
+    else if(snakeY<32){
+        snakeY=23*32;
+        }
+
 
     let newHead={
         x:snakeX,
@@ -88,9 +91,6 @@ else if(snakeY<32){
 
 
 
-    if(is_it_eaten){
-        locate_food();
-    }
     update();
 }
 
@@ -123,23 +123,24 @@ d="DOWN",control();
 
 function update(){
 
-    ctx.fillStyle="white";
-    ctx.font="45px Changa one";
-    ctx.fillText(score,box,box);
 
 
-    ctx.fillStyle ="black";
-    ctx.fillRect(0,0,58*box,25*box);
+  ctx.fillStyle ="black";
+  ctx.fillRect(0,0,58*box,25*box);
 
-    ctx.fillStyle ="white";
-    ctx.fillRect(box,box,56*box,23*box);
+  ctx.fillStyle="white";
+  ctx.font="45px Changa one";
+  ctx.fillText(score,box,box);
 
-   for(let x = 1; x<57;x++){
-        for(let y = 1; y<24;y++){
-            ctx.strokeStyle="grey";
-            ctx.strokeRect(x*32,y*32,32,32);
-        }
-    }
+  ctx.fillStyle ="white";
+  ctx.fillRect(box,box,56*box,23*box);
+
+ for(let x = 1; x<57;x++){
+      for(let y = 1; y<24;y++){
+          ctx.strokeStyle="grey";
+          ctx.strokeRect(x*32,y*32,32,32);
+      }
+  }
     for(let i = 0; i<snake.length;i++){
         ctx.fillStyle = (i==0)? "red": "blue";
         ctx.fillRect(snake[i].x,snake[i].y,box,box);
@@ -157,7 +158,7 @@ function update(){
 function game(){
 
 
-if(control())    clearInterval(action);
+if(control())   { clearInterval(action); document.removeEventListener("keydown",direction);;}
 
 }
 
