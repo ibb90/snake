@@ -32,6 +32,20 @@ function control(){
     if(d== "RIGHT") snakeX+=box;
     if(d== "UP") snakeY-=box;
     if(d== "DOWN") snakeY+=box;
+    if(snakeX>56*32){
+        snakeX=32;
+        }
+        else if(snakeX<32){
+        snakeX=56*32;
+        }
+    
+        if(snakeY>23*32){
+            snakeY=32;
+            }
+        else if(snakeY<32){
+            snakeY=23*32;
+            }
+    
 
     if(snakeX == food.x && snakeY == food.y){
         score++;
@@ -63,19 +77,6 @@ function control(){
         snake.pop();
     }
 
-    if(snakeX>56*32){
-    snakeX=32;
-    }
-    else if(snakeX<32){
-    snakeX=56*32;
-    }
-
-    if(snakeY>23*32){
-        snakeY=32;
-        }
-    else if(snakeY<32){
-        snakeY=23*32;
-        }
 
 
     let newHead={
